@@ -216,3 +216,30 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project datasets
+data/raw/
+data/processed/
+
+# Large files
+*.csv
+*.parquet
+*.zip
+
+# Databricks
+.databricks/
+
+# Azure
+.azure/
+
+# Environment variables
+.env
+
+# OS files
+.DS_Store
+
+# Notebook outputs
+*.dbc
+
+# Logs
+logs/
