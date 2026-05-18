@@ -37,28 +37,54 @@ Bronze → Silver → Gold Medallion Architecture
 ## Current Progress
 
 ### Completed
+
 - Created medallion storage architecture in ADLS Gen2
-- Built initial Azure Data Factory ingestion pipeline
-- Implemented Bronze raw layer ingestion
+- Built metadata-driven ingestion pipeline using Azure Data Factory
+- Implemented dynamic dataset parameterization
+- Developed automated multi-entity ingestion using:
+  - Get Metadata activity
+  - Filter activity
+  - ForEach activity
+  - Copy activity
+- Automated raw data movement from Landing layer to Bronze layer
 - Developed reusable PySpark bronze-to-delta conversion job
 - Implemented Delta Lake storage format
+- Added ingestion timestamp metadata using PySpark
 
-### In Progress
-- Metadata-driven ingestion orchestration
-- Generic parameterized ADF pipelines
-- Multi-entity ingestion framework
+### Current Pipeline Flow
+
+```text
+Landing Layer
+      ↓
+Get Metadata
+      ↓
+Filter Required Files
+      ↓
+ForEach Loop
+      ↓
+Copy Activity
+      ↓
+Bronze Raw Layer
+      ↓
+Databricks PySpark Job
+      ↓
+Bronze Delta Layer
+
+```
 
 ---
 
 ## Planned Features
 
-- Metadata-driven ingestion pipelines
+- Silver layer transformations
+- Gold analytics layer
 - Incremental ETL processing
 - Delta Lake MERGE operations
 - Data quality validation
 - KPI analytics tables
 - Power BI dashboards
-- Cloud-native orchestration using ADF
+- Parameterized Databricks orchestration
+- CI/CD integration
 
 ---
 
@@ -70,4 +96,4 @@ Brazilian E-Commerce Public Dataset by Olist
 
 ## Status
 
-Foundation architecture and Bronze layer ingestion pipelines are currently under development.
+Metadata-driven Bronze layer ingestion framework has been successfully implemented. Silver and Gold layer transformations are currently in progress.
