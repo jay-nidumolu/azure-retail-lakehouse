@@ -19,7 +19,7 @@ spark = (
 #Storage Configuration
 spark.conf.set(
     f"fs.azure.account.key.{storage_account}.dfs.core.windows.net",
-    storage_key
+    f"{storage_key}"
 )
 
 entity_name = sys.argv[1] if len(sys.argv) > 1 else "orders"
@@ -30,7 +30,7 @@ else:
     source_entity_name = f"order_{entity_name}"
 
 raw_path = (
-    f"abfss://bronze@{storage_account}.dfs.core.windows.net/",
+    f"abfss://bronze@{storage_account}.dfs.core.windows.net/"
     f"{entity_name}/"
     f"olist_{source_entity_name}_dataset.csv"
 )

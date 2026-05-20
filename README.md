@@ -38,38 +38,107 @@ Bronze → Silver → Gold Medallion Architecture
 
 ### Completed
 
-- Created medallion storage architecture in ADLS Gen2
-- Built metadata-driven ingestion pipeline using Azure Data Factory
-- Implemented dynamic dataset parameterization
-- Developed automated multi-entity ingestion using:
-  - Get Metadata activity
-  - Filter activity
-  - ForEach activity
-  - Copy activity
-- Automated raw data movement from Landing layer to Bronze layer
-- Developed reusable PySpark bronze-to-delta conversion job
-- Implemented Delta Lake storage format
-- Added ingestion timestamp metadata using PySpark
+---
 
-### Current Pipeline Flow
+### Storage Architecture
+
+- Created Medallion-based storage structure in ADLS Gen2
+- Configured Landing, Bronze, Silver, Gold, and Checkpoints containers
+- Organized entity-level storage structure for scalable ingestion
+
+---
+
+### Azure Data Factory Orchestration
+
+- Built metadata-driven ingestion pipelines using Azure Data Factory
+- Implemented reusable parameterized datasets
+- Automated multi-entity ingestion using:
+  - Get Metadata Activity
+  - Filter Activity
+  - ForEach Activity
+  - Copy Activity
+- Implemented dynamic sink routing for entity-based ingestion
+- Built modular pipeline orchestration using Execute Pipeline activities
+- Integrated Databricks Notebook Activity with ADF orchestration
+
+---
+
+### Databricks & PySpark
+
+- Developed reusable PySpark Bronze-to-Delta conversion workflow
+- Implemented parameterized Databricks notebook execution using widgets
+- Automated entity-level Delta conversion using ADF pipeline orchestration
+- Added ingestion timestamp metadata using PySpark
+- Implemented Delta Lake transactional storage format
+
+---
+
+### Delta Lake
+
+- Generated Delta tables with transaction logs (`_delta_log`)
+- Built scalable Bronze Delta layer for downstream transformations
+
+---
+
+## Implemented Pipelines
+
+### 1. Raw to Bronze Pipeline
+
+Automates ingestion of raw datasets from Landing layer into Bronze Raw storage using metadata-driven orchestration.
+
+---
+
+### 2. Bronze to Delta Pipeline
+
+Automates Delta Lake conversion of Bronze Raw datasets using Databricks and PySpark.
+
+---
+
+### 3. End-to-End Orchestrated Pipeline
+
+Combines ingestion and Delta conversion into a single orchestrated workflow using Execute Pipeline activities.
+
+---
+
+## Dataset
+
+### Brazilian E-Commerce Public Dataset by Olist
+
+Dataset includes:
+
+- Orders
+- Customers
+- Products
+- Payments
+- Order Items
+- Reviews
+- Sellers
+- Geolocation
+
+---
+
+## Repository Structure
 
 ```text
-Landing Layer
-      ↓
-Get Metadata
-      ↓
-Filter Required Files
-      ↓
-ForEach Loop
-      ↓
-Copy Activity
-      ↓
-Bronze Raw Layer
-      ↓
-Databricks PySpark Job
-      ↓
-Bronze Delta Layer
-
+azure-retail-lakehouse/
+│
+├── docs/
+│   ├── architecture/
+│   ├── screenshots/
+│   └── interview_notes/
+│
+├── adf/
+│   ├── pipelines/
+│   └── datasets/
+│
+├── databricks/
+│   ├── notebooks/
+│   ├── pyspark_jobs/
+│   └── sql/
+│
+├── configs/
+│
+└── powerbi/
 ```
 
 ---
@@ -78,22 +147,42 @@ Bronze Delta Layer
 
 - Silver layer transformations
 - Gold analytics layer
+- Star schema modeling
 - Incremental ETL processing
 - Delta Lake MERGE operations
-- Data quality validation
+- Slowly Changing Dimensions (SCD)
+- Data quality validation framework
 - KPI analytics tables
 - Power BI dashboards
-- Parameterized Databricks orchestration
+- Incremental pipeline orchestration
 - CI/CD integration
+- Databricks secret scopes
+- Monitoring and alerting
 
 ---
 
-## Dataset
+## Key Engineering Concepts Demonstrated
 
-Brazilian E-Commerce Public Dataset by Olist
+- Metadata-driven orchestration
+- Cloud-native Data Engineering
+- Dynamic pipeline parameterization
+- Reusable ingestion frameworks
+- Distributed data processing with Spark
+- Delta Lake transactional storage
+- Modular pipeline architecture
+- Medallion Architecture implementation
+- ADF to Databricks orchestration
+- Scalable multi-entity ingestion workflows
 
 ---
 
-## Status
+## Current Status
 
-Metadata-driven Bronze layer ingestion framework has been successfully implemented. Silver and Gold layer transformations are currently in progress.
+The metadata-driven Bronze ingestion and Delta Lake conversion framework has been successfully implemented.
+
+### Current Development Focus
+
+- Silver layer transformations
+- Business logic implementation
+- Analytics-ready Gold layer modeling
+- Power BI dashboard integration
