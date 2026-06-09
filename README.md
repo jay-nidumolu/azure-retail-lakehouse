@@ -24,7 +24,19 @@ The platform ingests raw retail datasets into Azure Data Lake Storage, processes
 
 ---
 
-## Architecture
+## Project Status
+
+| Layer | Status |
+|---------|---------|
+| Landing | ✅ Complete |
+| Bronze | ✅ Complete |
+| Silver | ✅ Complete |
+| Gold | 🔄 In Progress |
+| Power BI | ⏳ Planned |
+
+---
+
+## Solution Architecture
 
 Bronze → Silver → Gold Medallion Architecture
 
@@ -32,71 +44,135 @@ Bronze → Silver → Gold Medallion Architecture
 - Silver Layer → Cleaned and transformed data
 - Gold Layer → Business-ready analytics tables
 
+```text
+Raw Files
+    ↓
+ADF Raw → Bronze Pipeline
+    ↓
+ADLS Bronze Layer
+    ↓
+ADF Bronze → Silver Pipeline
+    ↓
+Azure Databricks (PySpark)
+    ↓
+ADLS Silver Layer
+    ↓
+DQ Audit Logs
+    ↓
+Gold Layer (In Progress)
+```
+
 ---
 
 ## Current Progress
 
 ### Completed
 
----
-
-### Storage Architecture
+#### Storage Architecture
 
 - Created Medallion-based storage structure in ADLS Gen2
-- Configured Landing, Bronze, Silver, Gold, and Checkpoints containers
+- Configured Landing, Bronze, Silver, Gold, and Audit containers
 - Organized entity-level storage structure for scalable ingestion
 
 ---
 
-### Azure Data Factory Orchestration
+#### Azure Data Factory Orchestration
 
-- Built metadata-driven ingestion pipelines using Azure Data Factory
+- Built metadata-driven Raw → Bronze ingestion pipeline
+- Built metadata-driven Bronze → Silver transformation pipeline
 - Implemented reusable parameterized datasets
-- Automated multi-entity ingestion using:
+- Automated multi-entity processing using:
   - Get Metadata Activity
-  - Filter Activity
   - ForEach Activity
   - Copy Activity
-- Implemented dynamic sink routing for entity-based ingestion
+  - Databricks Notebook Activity
+- Implemented dynamic path generation and entity routing
 - Built modular pipeline orchestration using Execute Pipeline activities
-- Integrated Databricks Notebook Activity with ADF orchestration
+- Developed end-to-end orchestration from Raw → Bronze → Silver
 
 ---
 
-### Databricks & PySpark
+#### Databricks & PySpark
 
-- Developed reusable PySpark Bronze-to-Delta conversion workflow
-- Implemented parameterized Databricks notebook execution using widgets
-- Automated entity-level Delta conversion using ADF pipeline orchestration
-- Added ingestion timestamp metadata using PySpark
-- Implemented Delta Lake transactional storage format
+- Developed reusable Silver transformation framework
+- Implemented metadata-driven processing for multiple entities
+- Implemented configurable schema standardization
+- Added reusable column renaming framework
+- Implemented reusable data type casting framework
+- Added ingestion metadata tracking
+- Automated Delta Lake writes to Silver layer
 
 ---
 
-### Delta Lake
+#### Data Quality Framework
 
-- Generated Delta tables with transaction logs (`_delta_log`)
-- Built scalable Bronze Delta layer for downstream transformations
+- Implemented reusable DQ validation framework
+- Implemented severity-based validation checks:
+  - Critical validations
+  - Warning-level validations
+- Implemented null value validation
+- Implemented duplicate detection and remediation
+- Implemented invalid value detection
+- Implemented DQ audit logging
+- Stored audit results in Delta format for monitoring and traceability
+
+---
+
+#### Silver Layer Features
+
+The Silver layer performs data cleansing, standardization, and validation before data is promoted to analytics-ready layers.
+
+Implemented transformations include:
+
+- Column standardization and renaming
+- Data type casting
+- Null value validation
+- Duplicate detection and remediation
+- Invalid value validation
+- Severity-based data quality checks
+- Audit log generation
+- Delta Lake storage optimization
+
+Implemented Silver transformations for:
+
+- Customers
+- Orders
+- Payments
+- Order Items
+- Products
+
+---
+
+#### Delta Lake
+
+- Implemented Bronze Delta layer
+- Implemented Silver Delta layer
+- Generated Delta transaction logs (`_delta_log`)
+- Built scalable lakehouse storage structure for downstream analytics
 
 ---
 
 ## Implemented Pipelines
 
-### 1. Raw to Bronze Pipeline
+### 1. Raw → Bronze Pipeline
 
-Automates ingestion of raw datasets from Landing layer into Bronze Raw storage using metadata-driven orchestration.
-
----
-
-### 2. Bronze to Delta Pipeline
-
-Automates Delta Lake conversion of Bronze Raw datasets using Databricks and PySpark.
+Metadata-driven ingestion pipeline that automatically discovers source entities and ingests raw files into Bronze storage.
 
 ---
 
-### 3. End-to-End Orchestrated Pipeline
+### 2. Bronze → Silver Pipeline
 
-Combines ingestion and Delta conversion into a single orchestrated workflow using Execute Pipeline activities.
+Metadata-driven transformation pipeline that executes reusable Databricks notebooks for entity-level cleansing, standardization, and Delta table generation.
+
+---
+
+### 3. End-to-End Orchestration Pipeline
+
+Master ADF pipeline that orchestrates:
+
+Raw Files → Bronze → Silver
+
+using Execute Pipeline activities.
 
 ---
 
@@ -145,14 +221,13 @@ azure-retail-lakehouse/
 
 ## Planned Features
 
-- Silver layer transformations
 - Gold analytics layer
 - Star schema modeling
+- Fact and Dimension tables
+- KPI aggregation tables
 - Incremental ETL processing
 - Delta Lake MERGE operations
 - Slowly Changing Dimensions (SCD)
-- Data quality validation framework
-- KPI analytics tables
 - Power BI dashboards
 - Incremental pipeline orchestration
 - CI/CD integration
@@ -173,16 +248,49 @@ azure-retail-lakehouse/
 - Medallion Architecture implementation
 - ADF to Databricks orchestration
 - Scalable multi-entity ingestion workflows
+- Data Quality Framework Design
+- Audit Logging and Monitoring
+- Reusable PySpark Transformation Framework
+- Severity-Based Data Validation
+- Delta Lake Data Management
 
 ---
 
 ## Current Status
 
-The metadata-driven Bronze ingestion and Delta Lake conversion framework has been successfully implemented.
+### Completed
 
-### Current Development Focus
+✅ Raw → Bronze ingestion
 
-- Silver layer transformations
-- Business logic implementation
-- Analytics-ready Gold layer modeling
-- Power BI dashboard integration
+✅ Bronze Delta conversion
+
+✅ Silver transformations
+
+✅ Metadata-driven ADF orchestration
+
+✅ Data Quality Framework
+
+✅ Audit Logging
+
+✅ Delta Lake implementation
+
+### In Progress
+
+🔄 Gold Layer Development
+
+### Upcoming
+
+📊 Power BI Analytics Dashboard
+
+📈 Business KPI Modeling
+
+🏗 Star Schema Design
+
+---
+
+## Additional Documentation
+
+- [Solution Architecture](docs/architecture.md)
+- [Bronze Layer Design](docs/bronze_ingestion_plan.md)
+- [Silver Layer Design](docs/silver_transformations_plan.md)
+- [Gold Layer Design](docs/gold_analytics_plan.md)
