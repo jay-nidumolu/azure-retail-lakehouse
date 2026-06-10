@@ -280,11 +280,9 @@ azure-retail-lakehouse/
 
 ### Upcoming
 
-📊 Power BI Analytics Dashboard
-
-📈 Business KPI Modeling
-
-🏗 Star Schema Design
+⏳ fact_sales
+⏳ KPI Aggregations
+⏳ Power BI Dashboard
 
 ---
 
